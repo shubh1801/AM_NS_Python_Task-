@@ -1,22 +1,46 @@
 from src.ImageConvertor import *
 from kafka import KafkaConsumer
 import json
+import os
+import cv2
+import pickle
+
+imgc = ImageConvertor()
 
 if __name__ == '__main__':
-    consumer = KafkaConsumer(
-        'python',
-        bootstrap_servers=['localhost:9092'],
-        auto_offset_reset='earliest',
-        enable_auto_commit=True,
-        group_id='my-group',
-        value_deserializer=lambda x: json.loads(x.decode('utf-8'))
-    )
 
-    for message in consumer:
-        message = message.value
-        print('{} added to'.format(message))
+    directory = os.path.join(os.getcwd(), "src\\Input")
+    for filename in os.listdir(directory):
+        if filename.endswith(".jpg"):
+            file_full_path = os.path.join(directory, filename)
+            #imgc.rgb2gray(file_full_path)
 
-    imgc = ImageConvertor()
-    imgc.rgb2gray('D:/DSC_6462 02.jpg')
+
+
+            consumer = KafkaConsumer(
+                'topicamns',
+                bootstrap_servers=['localhost:9092'],
+                auto_offset_reset='earliest',
+                enable_auto_commit=True,
+                group_id='my-group',
+                #value_deserializer=lambda x: (x.decode('utf-8'))
+            )
+
+            for message in consumer:
+                message = message.value
+                #imgc.rgb2gray(file_full_path)
+                print(message)
+                print(type(message))
+                try:
+                    y = pickle.loads(message)
+                    print(y)
+                except Exception as e:
+                    print(e)
+
+
+
+
+
+
 
 

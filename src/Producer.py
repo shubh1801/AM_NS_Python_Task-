@@ -35,12 +35,12 @@ for filename in os.listdir(directory):
         except kafka_errors as e:
             print(e)
 
-        # # Adding Record into Database
-        # current_time = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
-        #
-        # cursor.execute(
-        #     """insert into distributer_records (distributer_id,file_name,time_received) values ('123','""" + file_full_path + """' , '""" + current_time + """')""")
-        # conn.commit()
+        # Adding Record into Database
+        current_time = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
+
+        cursor.execute(
+            """insert into distributer_records (distributer_id,file_name,time_received) values ('123','""" + file_full_path + """' , '""" + current_time + """')""")
+        conn.commit()
 
 
 
